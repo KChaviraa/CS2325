@@ -1,0 +1,57 @@
+ ORG 0x40
+
+# test case 1
+str: DB "WALL assembly programming 4 the win!"
+str_len: EQU 36
+ORG 0x70
+mem_addrs: DB 0xA0,0xB0,0xC0,0xD0,0xE0,0xF0
+
+#test case 2
+#str: DB "WTAMU Computer Science!!!"
+#str_len: EQU 25
+#ORG 0x70
+#mem_addrs: DB 0xD0,0xE0,0xF0
+
+# test case 3
+#str: DB "W T A M U C S"
+#str_len: EQU 13
+#ORG 0x70
+#mem_addrs:DB 0x90,0xA0,0xB0,0xC0,0xD0,0xE0,0xF0
+  
+# test case 4
+#str: DB "Finished!"
+#str_len: EQU 9
+#ORG 0x70
+#mem_addrs: DB 0xF0
+
+ORG 0x00
+
+SIP main
+  blank: EQU 0x20 # hex for ASCII blank char
+  newline: EQU 0x0A # hex for ASCII newline char
+main:
+  LOAD R0, blank #space 
+  LOAD R1, str 
+  LOAD R2, str_len 
+  LOAD R3, 1
+  LOAD R4, 0x0 #index tracker
+
+
+
+loop:
+  LOAD R0, blank
+  ILOAD RF,[R1] #char into RF
+  ILOAD R4, [R1] #index++
+  JMPEQ R4=R0, sstr #if index=space { new sstr }
+  ADD R1, R1, R3 #str = str+1
+  MOVE R0, R2 #move str_len to R0
+  JMPLT R4<R0, done #if str is over, stop loop
+  JMP loop
+
+sstr:
+  LOAD RF, newline
+  ADD R1, R1, R3
+  JMP loop
+
+done:
+ HALT

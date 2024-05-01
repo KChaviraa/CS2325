@@ -1,0 +1,21 @@
+SIP main
+
+N: EQU 0xA
+k: EQU 0XA
+
+
+main:
+   LOAD R0, 0
+   LOAD R1, k
+   LOAD R2, 0 #sum
+   LOAD R3, -1
+
+while:
+    JMPEQ R1=R0, end
+    ADD R2, R2, R1  #sum=sum+k
+    ADD R1, R1, R3  #k=k-1
+    JMP while
+
+end:
+   STORE [0xBB], R2
+   HALT
